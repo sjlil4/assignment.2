@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 100%; }
+    </style>
+  </head>
+  <body>
+    <button onclick="panToMonashClayton()"> Pan to Monash Clayton </button>    
+    <button onclick="showPath()"> Show path </button>    
+    <button onclick="showPolygon()"> Show polygon </button>    
+    <div id="map"></div>
+    <script type="text/javascript">
+
+        // Global variable to hold map reference, so we can use it
+        // in other functions.
+        var map = null;
+        var campusPathActive = false
+        var campusPolygonActive = false
+        // Map Initialisation callback.  Will be called when Maps API loads.
+        function initMap() 
+        {
+            // Initialise map, centred on Melbourne, Australia.
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -37.8200855, lng: 144.9608045},
+                zoom: 17
+            });
+            var infowindow1 = new google.maps.InfoWindow({
+            position: {lat: -37.9128781, lng: 145.1362585},
+            content: "Monash Sport",
+            disableAutoPan: true,
+            });
+            var infowindow2 = new google.maps.InfoWindow({
+            position: {lat: -37.912641, lng: 145.1308405},
+            content: "Faculty of Medicine",
+            disableAutoPan: true,
+            });
+            var infowindow3 = new google.maps.InfoWindow({
+            position: {lat: -37.9092552, lng: 145.1338553},
+            content: "Faculty of Engineering",
+            disableAutoPan: true,
+            });
+            var infowindow4 = new google.maps.InfoWindow({
+            position: {lat: -37.9118667, lng: 145.1329004},
+            content: "Campus Centre",
+            disableAutoPan: true,
+            });
+            infowindow1.open(map);
+            infowindow2.open(map);
+            infowindow3.open(map);
+            infowindow4.open(map);
+        }
+
+        function panToMonashClayton()
+        {
+            map.setCenter({lat: -37.9110467, lng: 145.1343136})
+            }
+        
+        function showPath()
+        {
+            if (campusPathActive == true) {
+                campusPathActive = false
+                campusPath.setMap(null);
+            }
+            else{
+            var pathCoordinates = [
+            {lat: -37.9118667, lng: 145.1329004},
+            {lat: -37.9092552, lng: 145.1338553},
+            {lat: -37.912641, lng: 145.1308405},
+            {lat: -37.9128781, lng: 145.1362585}
+            ];
+            campusPath = new google.maps.Polyline({
+            path: pathCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+            });
+            campusPath.setMap(map);
+            campusPathActive = true;
+            }
+        }
+        
+        function showPolygon()
+        {
+            if (campusPolygonActive == true) {
+                campusPolygonActive = false;
+                campusPolygon.setMap(null);
+            }
+            else {
+            var polygonCoordinates = [
+            {lat: -37.9118667, lng: 145.1329004},
+            {lat: -37.9092552, lng: 145.1338553},
+            {lat: -37.912641, lng: 145.1308405},
+            {lat: -37.9128781, lng: 145.1362585},
+            {lat: -37.9118667, lng: 145.1329004}
+            ];
+            campusPolygon = new google.maps.Polygon({
+            paths: polygonCoordinates,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.3
+            });
+            campusPolygon.setMap(map);
+            campusPolygonActive = true;
+            }
+        }
+        
+    </script>
+    <script async defer
+  src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyC0n2At41AMgIzDCTz8xPgSsERFa--zeaY&callback=initMap">
+    </script>
+  </body>
+</html>
